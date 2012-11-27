@@ -14,7 +14,8 @@ define interface
 
       "sqlite3_interrupt",
 
-      "sqlite3_open_v2" => sqlite3-open,
+      "sqlite3_open",
+      "sqlite3_open_v2",
 
       "sqlite3_errcode",
       "sqlite3_extended_errcode",
@@ -55,6 +56,9 @@ define interface
 
     function "sqlite3_threadsafe",
       map-result: <C-boolean>;
+
+    function "sqlite3_open",
+      output-argument: 2;
 
     function "sqlite3_open_v2",
       output-argument: 2;

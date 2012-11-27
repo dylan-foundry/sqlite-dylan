@@ -22,7 +22,8 @@ define module sqlite
 
   export sqlite3-interrupt;
 
-  export sqlite3-open;
+  export sqlite3-open,
+    sqlite3-open-v2;
 
   export sqlite3-errcode,
     sqlite3-extended-errcode,
