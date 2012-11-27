@@ -1,0 +1,62 @@
+module: dylan-user
+
+define library sqlite
+  use common-dylan;
+  use c-ffi;
+  use io;
+
+  export sqlite;
+end library;
+
+define module sqlite
+  use common-dylan, exclude: { format-to-string };
+  use format-out;
+  use c-ffi;
+
+  export sqlite3-libversion-number, sqlite3-libversion,
+         sqlite3-sourceid;
+
+  export sqlite3-threadsafe;
+
+  export sqlite3-close;
+
+  export sqlite3-interrupt;
+
+  export sqlite3-open;
+
+  export sqlite3-errcode,
+    sqlite3-extended-errcode,
+    sqlite3-errmsg;
+
+  export sqlite3-prepare,
+    sqlite3-sql,
+    sqlite3-stmt-readonly,
+    sqlite3-stmt-busy,
+    sqlite3-bind-blob,
+    sqlite3-bind-double,
+    sqlite3-bind-int,
+    sqlite3-bind-int64,
+    sqlite3-bind-null,
+    sqlite3-bind-text,
+    sqlite3-bind-value,
+    sqlite3-bind-zeroblob,
+    sqlite3-bind-parameter-count,
+    sqlite3-bind-parameter-name,
+    sqlite3-bind-parameter-index,
+    sqlite3-clear-bindings,
+    sqlite3-column-count,
+    sqlite3-column-name,
+    sqlite3-column-decltype,
+    sqlite3-column-blob,
+    sqlite3-column-bytes,
+    sqlite3-column-double,
+    sqlite3-column-int,
+    sqlite3-column-int64,
+    sqlite3-column-text,
+    sqlite3-column-type,
+    sqlite3-column-value,
+    sqlite3-step,
+    sqlite3-data-count,
+    sqlite3-finalize,
+    sqlite3-reset;
+end module;
