@@ -10,3 +10,9 @@
    textual error as well.
  * Add macro for tests that automatically sets up and tears down
    the database.
+ * Support configuration stuff.
+ * Make existing stuff the low-level interface and provide a slightly
+   more sane interface on top that also does error checks and uses
+   conditions.
+ * Don't expose people to the fact that bind parameter indexes are
+   1-based while result indexes are 0-based. That is madness.
