@@ -1,7 +1,5 @@
 * Should we have a finalizer on statements to run sqlite3-finalize()?
 * Should we have a finalizer on the database to run sqlite3-close()?
-* Get a working example of sqlite3-open-v2.
-* Wrap sqlite3-prepare to extract size from the string.
 * Add many other #define'd constants to the sqlite.intr and library.dylan
   files.
 * Documentation.

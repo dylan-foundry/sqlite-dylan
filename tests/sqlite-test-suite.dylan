@@ -4,6 +4,7 @@ synopsis: Test suite for the sqlite library.
 define suite sqlite-test-suite ()
   test openclose-test;
   test statement-test;
+  test openclose-v2-test;
 end suite;
 
 define test openclose-test ()
@@ -14,10 +15,24 @@ define test openclose-test ()
               sqlite3-close(sqlite3), $SQLITE-OK);
 end test openclose-test;
 
+define test openclose-v2-test ()
+  let db-location = concatenate(as(<string>, temp-directory()), "openclose-v2-test.db");
+  
+  let (result, sqlite3) = sqlite3-open-v2(db-location, 
+                                          logior($SQLITE-OPEN-READWRITE, $SQLITE-OPEN-CREATE), 
+                                          $SQLITE-NULL-STRING);
+  check-equal("open returns SQLITE_OK",
+              result, $SQLITE-OK);
+  check-equal("close returns SQLITE_OK",
+              sqlite3-close(sqlite3), $SQLITE-OK);
+
+  delete-file(db-location);
+end test openclose-v2-test;
+
 define test statement-test ()
   let sql = "SELECT :AAAA;";
   let (open-result, sqlite3) = sqlite3-open(":memory:");
-  let (prepare-result, statement, remaining) = sqlite3-prepare(sqlite3, sql, -1);
+  let (prepare-result, statement) = sqlite3-prepare(sqlite3, sql);
   check-equal("prepare returns SQLITE_OK",
               prepare-result, $SQLITE-OK);
   check-equal("statement has 1 bind parameter",

@@ -21,7 +21,7 @@ define interface
       "sqlite3_extended_errcode",
       "sqlite3_errmsg",
 
-      "sqlite3_prepare_v2" => sqlite3-prepare,
+      "sqlite3_prepare_v2" => %sqlite3-prepare,
       "sqlite3_sql",
       "sqlite3_stmt_readonly",
       "sqlite3_stmt_busy",
@@ -81,7 +81,15 @@ define interface
       "SQLITE_RANGE",
       "SQLITE_NOTADB",
       "SQLITE_ROW",
-      "SQLITE_DONE"
+      "SQLITE_DONE",
+      "SQLITE_OPEN_READONLY",
+      "SQLITE_OPEN_READWRITE",
+      "SQLITE_OPEN_CREATE",
+      "SQLITE_OPEN_URI",
+      "SQLITE_OPEN_NOMUTEX",
+      "SQLITE_OPEN_FULLMUTEX",
+      "SQLITE_OPEN_SHAREDCACHE",
+      "SQLITE_OPEN_PRIVATECACHE"
     };
 
     function "sqlite3_threadsafe",
@@ -103,3 +111,9 @@ define interface
     function "sqlite3_stmt_busy",
       map-result: <C-boolean>;
 end interface;
+
+define constant $SQLITE-NULL-STRING = null-pointer(<c-string>);
+
+define function sqlite3-prepare(db :: <sqlite3*>, sql :: <string>) => (res :: <integer>, statement :: <sqlite3-stmt*>)
+  %sqlite3-prepare(db, sql, size(sql));
+end function;
