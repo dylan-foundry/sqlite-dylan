@@ -1,11 +1,36 @@
 module: sqlite-test-suite
 synopsis: Test suite for the sqlite library.
 
+define macro with-sqlite-db
+  { with-sqlite-db (?db-handle:variable = ?db-location:expression) ?:body end }
+    => {
+        let _sqlite3-db = #f;
+        block() 
+          let (result, _sqlite3-db) = sqlite3-open(?db-location);
+          let ?db-handle = _sqlite3-db;
+          ?body;
+        cleanup
+          if (_sqlite3-db)
+            sqlite3-close(_sqlite3-db);
+          end
+        end
+       }
+end macro with-sqlite-db;
+
 define suite sqlite-test-suite ()
+  test openclose-macro-test;
   test openclose-test;
   test statement-test;
   test openclose-v2-test;
 end suite;
+
+define test openclose-macro-test ()
+  with-sqlite-db(db = ":memory:")
+    check-true("database handle should not be #f", db);
+
+    check-equal("errcode should be 0", 0, sqlite3-errcode(db));
+  end;
+end test test-macro-test;
 
 define test openclose-test ()
   let (result, sqlite3) = sqlite3-open(":memory:");
