@@ -14,6 +14,8 @@ test: sqlite.dylan
 	dylan-compiler -build sqlite-test-suite-app
 	_build/bin/sqlite-test-suite-app
 
-clean-dylan:
-
-clean: clean-dylan
+clean:
+	rm -f sqlite.dylan
+	rm -rf _build/bin/sqlite*
+	rm -rf _build/lib/*sqlite*
+	rm -rf _build/build/sqlite*

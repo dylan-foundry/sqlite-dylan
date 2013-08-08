@@ -78,8 +78,6 @@ define test statement-test ()
                 sqlite3-bind-int(statement, 1, 3), $SQLITE-OK);
     check-equal("statement can be stepped",
                 sqlite3-step(statement), $SQLITE-ROW);
-    check-equal("stepped statement is busy",
-                sqlite3-stmt-busy(statement), #t);
     check-equal("statement returned correct number of columns.",
                 sqlite3-data-count(statement), 1);
     check-equal("statement returned correct data",
