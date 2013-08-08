@@ -6,8 +6,6 @@
 * Should we wrap sqlite3_exec()?
 * Add macro for tests that does a check and on a failure prints the
   textual error as well.
-* Add macro for tests that automatically sets up and tears down
-  the database.
 * Support configuration stuff.
 * Make existing stuff the low-level interface and provide a slightly
   more sane interface on top that also does error checks and uses
