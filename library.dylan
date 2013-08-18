@@ -105,7 +105,14 @@ define module sqlite
     $SQLITE-OPEN-PRIVATECACHE,
     $SQLITE-NULL-STRING;
 
+  export
+    $NULL-SQLITE-HANDLE;
+
   create
     <sqlite-dbms>,
-    <sqlite-connection>;
+    <sqlite-connection>,
+    <sqlite-database>,
+    <sqlite-user>,
+    connection-handle,
+    path-name;
 end module;
