@@ -30,7 +30,7 @@ define test openclose-macro-test ()
 
     check-equal("errcode should be 0", 0, sqlite3-errcode(db));
   end;
-end test test-macro-test;
+end test openclose-macro-test;
 
 define test openclose-test ()
   let (result, sqlite3) = sqlite3-open(":memory:");
@@ -55,9 +55,9 @@ define test openclose-v2-test ()
 end test openclose-v2-test;
 
 define test statement-test ()
-  let sql = "SELECT :AAAA;";
+  let sql-query = "SELECT :AAAA;";
   with-sqlite-db(sqlite3 = ":memory:") 
-    let (prepare-result, statement) = sqlite3-prepare(sqlite3, sql);
+    let (prepare-result, statement) = sqlite3-prepare(sqlite3, sql-query);
     check-equal("prepare returns SQLITE_OK",
                 prepare-result, $SQLITE-OK);
     check-equal("statement has 1 bind parameter",
@@ -73,7 +73,7 @@ define test statement-test ()
     check-equal("statement is not busy",
                 sqlite3-stmt-busy(statement), #f);
     check-equal("statement has correct SQL",
-                sqlite3-sql(statement), sql);
+                sqlite3-sql(statement), sql-query);
     check-equal("statement parameter can be bound",
                 sqlite3-bind-int(statement, 1, 3), $SQLITE-OK);
     check-equal("statement can be stepped",

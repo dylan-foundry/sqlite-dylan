@@ -5,6 +5,9 @@ define library sqlite
   use c-ffi;
   use io;
 
+  use sql, 
+    import: {sql};
+
   export sqlite;
 end library;
 
@@ -12,6 +15,7 @@ define module sqlite
   use common-dylan, exclude: { format-to-string };
   use format-out;
   use c-ffi;
+  use sql, import: all, export: all;
 
   export sqlite3-libversion-number, sqlite3-libversion,
          sqlite3-sourceid;
@@ -100,4 +104,8 @@ define module sqlite
     $SQLITE-OPEN-SHAREDCACHE,
     $SQLITE-OPEN-PRIVATECACHE,
     $SQLITE-NULL-STRING;
+
+  create
+    <sqlite-dbms>,
+    <sqlite-connection>;
 end module;

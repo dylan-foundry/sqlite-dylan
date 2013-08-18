@@ -114,6 +114,6 @@ end interface;
 
 define constant $SQLITE-NULL-STRING = null-pointer(<c-string>);
 
-define function sqlite3-prepare(db :: <sqlite3*>, sql :: <string>) => (res :: <integer>, statement :: <sqlite3-stmt*>)
-  %sqlite3-prepare(db, sql, size(sql));
+define function sqlite3-prepare(db :: <sqlite3*>, sql-query :: <string>) => (res :: <integer>, statement :: <sqlite3-stmt*>)
+  %sqlite3-prepare(db, sql-query, size(sql-query));
 end function;
