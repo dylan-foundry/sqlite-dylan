@@ -16,6 +16,7 @@ define module sqlite
   use format-out;
   use c-ffi;
   use sql, import: all, export: all;
+  use finalization;
 
   export sqlite3-libversion-number, sqlite3-libversion,
          sqlite3-sourceid;
@@ -113,6 +114,10 @@ define module sqlite
     <sqlite-connection>,
     <sqlite-database>,
     <sqlite-user>,
+    <sqlite-sql-statement>,
+    <sqlite-result-set>,
+    <sqlite-forward-only-result-set>,
+    <sqlite-scrollable-result-set>,
     connection-handle,
     path-name;
 end module;
