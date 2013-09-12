@@ -9,6 +9,8 @@ define concrete class <sqlite-sql-statement> (<sql-statement>)
   slot connection :: <sqlite-connection> = default-connection(),
     init-keyword: connection:;
 
+  slot bindings :: <vector> = make(<vector>);
+
   slot %statement-handle :: <sqlite3-stmt*> = $null-statement-handle;
 
   slot %prepared :: <boolean> = #f;  
@@ -71,6 +73,9 @@ define method execute (stmt :: <sqlite-sql-statement>,
   end;
 
   //TODO: bind parameters
+  if (parameters.size > 0)
+    bind-parameters(statement, parameters);
+  end if;
 
   let (prepare-result, statement) = sqlite3-prepare(stmt.connection.connection-handle, stmt.text);
   stmt.%prepared := #t;
@@ -79,5 +84,29 @@ define method execute (stmt :: <sqlite-sql-statement>,
     // sql statement bombed. bomb here.
   end;
 
+  if (result-set-policy)
+    let column-count = sqlite3-column-count(statement);
+    
+    if (column-count > 0)
+      make(<sqlite-result-set>,
+           result-set-policy: result-set-policy,
+           statement: statement,
+           liason: liason);
+    else
+        make(<empty-result-set>);
+    end;
+  end;
+
   #f
 end method execute;
+
+
+
+define method bind-parameters(statement :: <sqlite-sql-statement>,
+                              parameters :: <sequence>)
+  => ()
+
+  for (parameter-number :: <integer> from 0 below parameters.size)
+    
+  end for;
+end method;

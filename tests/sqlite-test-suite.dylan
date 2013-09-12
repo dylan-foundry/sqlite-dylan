@@ -55,19 +55,19 @@ define test openclose-v2-test ()
 end test openclose-v2-test;
 
 define test statement-test ()
-  let sql-query = "SELECT :AAAA;";
+  let sql-query = "SELECT :AAAA, :BBB;";
   with-sqlite-db(sqlite3 = ":memory:") 
     let (prepare-result, statement) = sqlite3-prepare(sqlite3, sql-query);
     check-equal("prepare returns SQLITE_OK",
                 prepare-result, $SQLITE-OK);
-    check-equal("statement has 1 bind parameter",
-                sqlite3-bind-parameter-count(statement), 1);
+    check-equal("statement has 2 bind parameters",
+                sqlite3-bind-parameter-count(statement), 2);
     check-equal("statement has correct bind parameter name",
                 sqlite3-bind-parameter-name(statement, 1), ":AAAA");
     check-equal("statement has bind parameter in correct position",
                 sqlite3-bind-parameter-index(statement, ":AAAA"), 1);
-    check-equal("statement returns 1 column",
-                sqlite3-column-count(statement), 1);
+    check-equal("statement returns 2 columns",
+                sqlite3-column-count(statement), 2);
     check-equal("statement is read-only",
                 sqlite3-stmt-readonly(statement), #t);
     check-equal("statement is not busy",
@@ -76,10 +76,13 @@ define test statement-test ()
                 sqlite3-sql(statement), sql-query);
     check-equal("statement parameter can be bound",
                 sqlite3-bind-int(statement, 1, 3), $SQLITE-OK);
+    
+    sqlite3-parameter-binder(statement, 2, "test");
+    
     check-equal("statement can be stepped",
                 sqlite3-step(statement), $SQLITE-ROW);
     check-equal("statement returned correct number of columns.",
-                sqlite3-data-count(statement), 1);
+                sqlite3-data-count(statement), 2);
     check-equal("statement returned correct data",
                 sqlite3-column-int(statement, 0), 3);
     check-equal("statement is done after stepping again",

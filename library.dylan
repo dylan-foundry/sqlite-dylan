@@ -120,4 +120,7 @@ define module sqlite
     <sqlite-scrollable-result-set>,
     connection-handle,
     path-name;
+
+  export
+    sqlite3-parameter-binder;
 end module;
