@@ -72,13 +72,14 @@ define method execute (stmt :: <sqlite-sql-statement>,
     close-statement(stmt)
   end;
 
-  //TODO: bind parameters
   if (parameters.size > 0)
-    bind-parameters(statement, parameters);
+    bind-parameters(stmt, parameters);
   end if;
 
-  let (prepare-result, statement) = sqlite3-prepare(stmt.connection.connection-handle, stmt.text);
+  let (prepare-result, statement) = sqlite3-prepare(stmt.connection.connection-handle,
+						    stmt.text);
   stmt.%prepared := #t;
+  stmt.%statement-handle := statement;
 
   if (prepare-result ~= $SQLITE-OK)
     // sql statement bombed. bomb here.
@@ -90,23 +91,22 @@ define method execute (stmt :: <sqlite-sql-statement>,
     if (column-count > 0)
       make(<sqlite-result-set>,
            result-set-policy: result-set-policy,
-           statement: statement,
-           liason: liason);
+           statement: stmt,
+           liaison: liaison);
     else
         make(<empty-result-set>);
     end;
+  else
+    close-statement(stmt);
   end;
-
-  #f
 end method execute;
-
-
 
 define method bind-parameters(statement :: <sqlite-sql-statement>,
                               parameters :: <sequence>)
   => ()
-
   for (parameter-number :: <integer> from 0 below parameters.size)
-    
+    sqlite3-parameter-binder(statement.%statement-handle, 
+      parameter-number, 
+      parameters[parameter-number]);
   end for;
 end method;

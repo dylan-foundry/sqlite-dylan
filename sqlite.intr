@@ -151,7 +151,5 @@ define method sqlite3-parameter-binder(stmt :: <sqlite3-stmt*>,
                                       parameter-number :: <integer>,
                                       value :: <float>)
   => ()
-  sqlite3-bind-double(stmt, parameter-number, value);
+  sqlite3-bind-double(stmt, parameter-number, as(<double-float>, value));
 end method;
-
-
