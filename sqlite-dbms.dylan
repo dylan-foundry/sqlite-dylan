@@ -8,11 +8,11 @@ define concrete class <sqlite-dbms> (<dbms>)
   slot %dbms-version :: false-or(<string>) = #f;
 end class;
 
-define method dbms-name(dbms :: <sqlite-dbms>, #key connection :: <connection>) => (name :: <string>)
+define method dbms-name (dbms :: <sqlite-dbms>, #key connection :: <connection>) => (name :: <string>)
   dbms.%dbms-name;
 end method;
 
-define method dbms-version(dbms :: <sqlite-dbms>, #key connection :: <connection>) => (version :: <string>)
+define method dbms-version (dbms :: <sqlite-dbms>, #key connection :: <connection>) => (version :: <string>)
   let version = sqlite3-libversion();
 
   dbms.%dbms-version := version;

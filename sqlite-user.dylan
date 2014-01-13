@@ -6,7 +6,7 @@ Warranty:     Distributed WITHOUT WARRANTY OF ANY KIND
 define concrete class <sqlite-user> (<user>)
 end class;
 
-define method make-dbms-specific(type == <user>, dbms :: <sqlite-dbms>, #rest more-args)
-  => (user :: <sqlite-user>)
+define method make-dbms-specific (type == <user>, dbms :: <sqlite-dbms>, #rest more-args)
+ => (user :: <sqlite-user>)
   apply(make, <sqlite-user>, more-args);
 end method;

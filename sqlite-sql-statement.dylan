@@ -17,26 +17,26 @@ define concrete class <sqlite-sql-statement> (<sql-statement>)
 end class;
 
 define method make-dbms-specific (type == <sqlite-sql-statement>, dbms :: <sqlite-dbms>, #rest more-args)
-  => (sql-statement :: <sqlite-sql-statement>)
+ => (sql-statement :: <sqlite-sql-statement>)
   apply(make, <sqlite-sql-statement>, more-args);
 end method make-dbms-specific;
 
-define method initialize(stmt :: <sqlite-sql-statement>, #key)
-  => ()
+define method initialize (stmt :: <sqlite-sql-statement>, #key)
+ => ()
   next-method();
 
   finalize-when-unreachable(stmt);
 end method initialize;
 
 define method finalize (stmt :: <sqlite-sql-statement>)
-  => ()
+ => ()
   close-statement(stmt);
 
   next-method();
 end method finalize;
 
 define method statement-column-names (stmt :: <sqlite-sql-statement>)
-  => (column-names :: <simple-object-vector>)
+ => (column-names :: <simple-object-vector>)
   //TODO: assert the statement handle is valid
   let statement-handle = stmt.%statement-handle;
 
@@ -53,8 +53,6 @@ define method close-statement (stmt :: <sqlite-sql-statement>) => ()
   if (stmt.%prepared)
     let handle = stmt.%statement-handle;
     if (handle ~= $null-statement-handle)
-      let connection = stmt.connection;
-
       sqlite3-finalize(handle);
     end if;
 
@@ -63,9 +61,9 @@ define method close-statement (stmt :: <sqlite-sql-statement>) => ()
 end method close-statement;
 
 define method execute (stmt :: <sqlite-sql-statement>,
-       #key result-set-policy :: false-or(<result-set-policy>) = $default-result-set-policy,
-          parameters :: <sequence> = #(),
-          liaison :: false-or(<function>))
+                       #key result-set-policy :: false-or(<result-set-policy>) = $default-result-set-policy,
+                            parameters :: <sequence> = #(),
+                            liaison :: false-or(<function>))
  => (result-set :: false-or(<result-set>))
 
   if (stmt.%prepared)
@@ -77,7 +75,7 @@ define method execute (stmt :: <sqlite-sql-statement>,
   end if;
 
   let (prepare-result, statement) = sqlite3-prepare(stmt.connection.connection-handle,
-						    stmt.text);
+                                                    stmt.text);
   stmt.%prepared := #t;
   stmt.%statement-handle := statement;
 
@@ -101,12 +99,12 @@ define method execute (stmt :: <sqlite-sql-statement>,
   end;
 end method execute;
 
-define method bind-parameters(statement :: <sqlite-sql-statement>,
-                              parameters :: <sequence>)
-  => ()
+define method bind-parameters (statement :: <sqlite-sql-statement>,
+                               parameters :: <sequence>)
+ => ()
   for (parameter-number :: <integer> from 0 below parameters.size)
     sqlite3-parameter-binder(statement.%statement-handle, 
-      parameter-number, 
-      parameters[parameter-number]);
+                             parameter-number, 
+                             parameters[parameter-number]);
   end for;
 end method;

@@ -21,13 +21,13 @@ define class <sqlite-scrollable-result-set> (<sqlite-result-set>, <scrollable-re
   constant slot %record-cache :: <deque> = make(<deque>);
 end class;
 
-define method make(type == <sqlite-result-set>,
-        #key result-set-policy :: <result-set-policy>,
-        statement :: false-or(<sqlite-sql-statement>),
-        liaison :: false-or(<function>),
-        generator :: false-or(<function>),
-        connection: conn :: false-or(<sqlite-connection>))
-  =>  (result-set :: <result-set>)
+define method make (type == <sqlite-result-set>,
+                    #key result-set-policy :: <result-set-policy>,
+                         statement :: false-or(<sqlite-sql-statement>),
+                         liaison :: false-or(<function>),
+                         generator :: false-or(<function>),
+                         connection: conn :: false-or(<sqlite-connection>))
+ =>  (result-set :: <result-set>)
 
   let the-liaison = if (liaison ~= #f)
                       liaison
@@ -39,9 +39,10 @@ define method make(type == <sqlite-result-set>,
                       end if
                     end if;
 
-  make(<sqlite-forward-only-result-set>, sql-statement: statement,
-    liaison: the-liaison,
-    generator: generator,
-    rowset-size: 10,
-    connection: if (statement ~= #f) statement.connection else connection end if);
+  make(<sqlite-forward-only-result-set>, 
+       sql-statement: statement,
+       liaison: the-liaison,
+       generator: generator,
+       rowset-size: 10,
+       connection: if (statement ~= #f) statement.connection else connection end if);
 end method;

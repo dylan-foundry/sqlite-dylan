@@ -9,7 +9,7 @@ define concrete class <sqlite-database> (<database>)
 end class;
 
 define method make-dbms-specific (type == <database>, dbms :: <sqlite-dbms>, #rest more-args)
-  => (database :: <sqlite-database>)
+ => (database :: <sqlite-database>)
 
   apply(make, <sqlite-database>, more-args);
 end method;

@@ -11,11 +11,11 @@ define concrete class <sqlite-connection> (<connection>)
     init-keyword: connection-handle:;
 end class;
 
-define method connect(database :: <sqlite-database>,
-    user :: <user>,
-    #key path-name :: <string> = "",
-    dbms :: <sqlite-dbms> = default-dbms())
-  => (connection :: <sqlite-connection>)
+define method connect (database :: <sqlite-database>,
+                       user :: <user>,
+                       #key path-name :: <string> = "",
+                            dbms :: <sqlite-dbms> = default-dbms())
+ => (connection :: <sqlite-connection>)
 
   let (result, sqlite3-db-handle) = sqlite3-open(path-name);
   assert(result == $SQLITE-OK, "database open failed: %d", result);
@@ -37,9 +37,9 @@ define method connect(database :: <sqlite-database>,
   connection;
 end method;
 
-define method disconnect(connection :: <sqlite-connection>,
-    #key terminate-statements :: <boolean>)
-  => ()
+define method disconnect (connection :: <sqlite-connection>,
+                          #key terminate-statements :: <boolean>)
+ => ()
   assert(connection.connection-handle ~= $NULL-SQLITE-HANDLE, "Not connected!");
 
   sqlite3-close(connection.connection-handle);
@@ -48,7 +48,7 @@ define method disconnect(connection :: <sqlite-connection>,
 end method;
 
 define method finalize (connection :: <sqlite-connection>)
-  => ()
+ => ()
   let conn-handle = connection.connection-handle;
   if (conn-handle ~= $NULL-SQLITE-HANDLE)
     sqlite3-close(conn-handle);
