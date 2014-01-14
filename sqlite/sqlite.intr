@@ -24,7 +24,7 @@ define interface
       "sqlite3_prepare_v2" => %sqlite3-prepare,
       "sqlite3_sql",
       "sqlite3_stmt_readonly",
-      "sqlite3_stmt_busy",
+      // "sqlite3_stmt_busy", // Not available in Ubuntu
       "sqlite3_bind_blob",
       "sqlite3_bind_double",
       "sqlite3_bind_int",
@@ -109,8 +109,8 @@ define interface
     function "sqlite3_stmt_readonly",
       map-result: <C-boolean>;
 
-    function "sqlite3_stmt_busy",
-      map-result: <C-boolean>;
+    /* function "sqlite3_stmt_busy",
+      map-result: <C-boolean>; */
 
 end interface;
 

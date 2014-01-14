@@ -32,7 +32,7 @@ define module sqlite
   export sqlite3-prepare,
     sqlite3-sql,
     sqlite3-stmt-readonly,
-    sqlite3-stmt-busy,
+    // sqlite3-stmt-busy,
     sqlite3-bind-blob,
     sqlite3-bind-double,
     sqlite3-bind-int,
