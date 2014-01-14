@@ -89,7 +89,8 @@ define interface
       "SQLITE_OPEN_NOMUTEX",
       "SQLITE_OPEN_FULLMUTEX",
       "SQLITE_OPEN_SHAREDCACHE",
-      "SQLITE_OPEN_PRIVATECACHE"
+      "SQLITE_OPEN_PRIVATECACHE",
+      "SQLITE_STATIC"
     };
 
     function "sqlite3_threadsafe",
@@ -110,10 +111,45 @@ define interface
 
     function "sqlite3_stmt_busy",
       map-result: <C-boolean>;
+
+  
 end interface;
 
 define constant $SQLITE-NULL-STRING = null-pointer(<c-string>);
 
-define function sqlite3-prepare(db :: <sqlite3*>, sql :: <string>) => (res :: <integer>, statement :: <sqlite3-stmt*>)
-  %sqlite3-prepare(db, sql, size(sql));
+define function sqlite3-prepare(db :: <sqlite3*>, sql-query :: <string>)
+  => (res :: <integer>, statement :: <sqlite3-stmt*>)
+  %sqlite3-prepare(db, sql-query, size(sql-query));
 end function;
+
+define generic sqlite3-parameter-binder(stmt :: <sqlite3-stmt*>,
+                                       parameter-number :: <integer>,
+                                       value :: <object>) => ();
+
+define method sqlite3-parameter-binder(stmt :: <sqlite3-stmt*>,
+                                      parameter-number :: <integer>,
+                                      value :: <integer>)
+  => ()
+  sqlite3-bind-int64(stmt, parameter-number, value);
+end method;
+
+define C-callable-wrapper sqlite3-text-cb of sqlite3-text-callback
+  parameter ptr :: <C-function-pointer>;
+end C-callable-wrapper;
+
+define function sqlite3-text-callback(ptr :: <C-function-pointer>) => ()
+end function;
+
+define method sqlite3-parameter-binder(stmt :: <sqlite3-stmt*>,
+                                      parameter-number :: <integer>,
+                                      value :: <string>)
+  => ()
+  sqlite3-bind-text(stmt, parameter-number, value, size(value), sqlite3-text-cb);
+end method;
+
+define method sqlite3-parameter-binder(stmt :: <sqlite3-stmt*>,
+                                      parameter-number :: <integer>,
+                                      value :: <float>)
+  => ()
+  sqlite3-bind-double(stmt, parameter-number, as(<double-float>, value));
+end method;
