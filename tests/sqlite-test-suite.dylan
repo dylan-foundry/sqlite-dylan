@@ -70,8 +70,10 @@ define test statement-test ()
                 sqlite3-column-count(statement), 2);
     check-equal("statement is read-only",
                 sqlite3-stmt-readonly(statement), #t);
-    check-equal("statement is not busy",
-                sqlite3-stmt-busy(statement), #f);
+    // Commented out for now because sqlite3-stmt-busy isn't available
+    // on all systems, notably Ubuntu 12.04.  It's new as of 3.7.10.
+    // check-equal("statement is not busy",
+    //             sqlite3-stmt-busy(statement), #f);
     check-equal("statement has correct SQL",
                 sqlite3-sql(statement), sql-query);
     check-equal("statement parameter can be bound",
@@ -81,6 +83,9 @@ define test statement-test ()
 
     check-equal("statement can be stepped",
                 sqlite3-step(statement), $SQLITE-ROW);
+    // See above comment.
+    // check-equal("stepped statement is busy",
+    //             sqlite3-stmt-busy(statement), #t);
     check-equal("statement returned correct number of columns.",
                 sqlite3-data-count(statement), 2);
     check-equal("statement returned correct data",
