@@ -112,7 +112,6 @@ define interface
     function "sqlite3_stmt_busy",
       map-result: <C-boolean>;
 
-  
 end interface;
 
 define constant $SQLITE-NULL-STRING = null-pointer(<c-string>);

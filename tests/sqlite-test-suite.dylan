@@ -5,7 +5,7 @@ define macro with-sqlite-db
   { with-sqlite-db (?db-handle:variable = ?db-location:expression) ?:body end }
     => {
         let _sqlite3-db = #f;
-        block() 
+        block ()
           let (result, _sqlite3-db) = sqlite3-open(?db-location);
           let ?db-handle = _sqlite3-db;
           ?body;
@@ -42,9 +42,9 @@ end test openclose-test;
 
 define test openclose-v2-test ()
   let db-location = concatenate(as(<string>, temp-directory()), "openclose-v2-test.db");
-  
-  let (result, sqlite3) = sqlite3-open-v2(db-location, 
-                                          logior($SQLITE-OPEN-READWRITE, $SQLITE-OPEN-CREATE), 
+
+  let (result, sqlite3) = sqlite3-open-v2(db-location,
+                                          logior($SQLITE-OPEN-READWRITE, $SQLITE-OPEN-CREATE),
                                           $SQLITE-NULL-STRING);
   check-equal("open returns SQLITE_OK",
               result, $SQLITE-OK);
@@ -56,7 +56,7 @@ end test openclose-v2-test;
 
 define test statement-test ()
   let sql-query = "SELECT :AAAA, :BBB;";
-  with-sqlite-db(sqlite3 = ":memory:") 
+  with-sqlite-db(sqlite3 = ":memory:")
     let (prepare-result, statement) = sqlite3-prepare(sqlite3, sql-query);
     check-equal("prepare returns SQLITE_OK",
                 prepare-result, $SQLITE-OK);
@@ -76,9 +76,9 @@ define test statement-test ()
                 sqlite3-sql(statement), sql-query);
     check-equal("statement parameter can be bound",
                 sqlite3-bind-int(statement, 1, 3), $SQLITE-OK);
-    
+
     sqlite3-parameter-binder(statement, 2, "test");
-    
+
     check-equal("statement can be stepped",
                 sqlite3-step(statement), $SQLITE-ROW);
     check-equal("statement returned correct number of columns.",
@@ -92,6 +92,6 @@ define test statement-test ()
     check-equal("statement can be finalized",
                 sqlite3-finalize(statement), $SQLITE-OK);
     check-equal("close returns SQLITE_OK",
-                sqlite3-close(sqlite3), $SQLITE-OK);   
+                sqlite3-close(sqlite3), $SQLITE-OK);
   end;
 end test statement-test;

@@ -5,7 +5,7 @@ define library sqlite-database
   use c-ffi;
   use sqlite;
 
-  use sql, 
+  use sql,
     import: {sql};
 
   export sqlite-database;

@@ -39,7 +39,7 @@ define method make (type == <sqlite-result-set>,
                       end if
                     end if;
 
-  make(<sqlite-forward-only-result-set>, 
+  make(<sqlite-forward-only-result-set>,
        sql-statement: statement,
        liaison: the-liaison,
        generator: generator,

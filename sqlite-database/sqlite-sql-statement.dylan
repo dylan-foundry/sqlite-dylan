@@ -13,7 +13,7 @@ define concrete class <sqlite-sql-statement> (<sql-statement>)
 
   slot %statement-handle :: <sqlite3-stmt*> = $null-statement-handle;
 
-  slot %prepared :: <boolean> = #f;  
+  slot %prepared :: <boolean> = #f;
 end class;
 
 define method make-dbms-specific (type == <sqlite-sql-statement>, dbms :: <sqlite-dbms>, #rest more-args)
@@ -85,7 +85,7 @@ define method execute (stmt :: <sqlite-sql-statement>,
 
   if (result-set-policy)
     let column-count = sqlite3-column-count(statement);
-    
+
     if (column-count > 0)
       make(<sqlite-result-set>,
            result-set-policy: result-set-policy,
@@ -103,8 +103,8 @@ define method bind-parameters (statement :: <sqlite-sql-statement>,
                                parameters :: <sequence>)
  => ()
   for (parameter-number :: <integer> from 0 below parameters.size)
-    sqlite3-parameter-binder(statement.%statement-handle, 
-                             parameter-number, 
+    sqlite3-parameter-binder(statement.%statement-handle,
+                             parameter-number,
                              parameters[parameter-number]);
   end for;
 end method;
