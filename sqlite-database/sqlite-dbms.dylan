@@ -1,4 +1,4 @@
-module: sqlite
+module: sqlite-database
 author: robert@robertroland.org
 License:      See License.txt in this distribution for details.
 Warranty:     Distributed WITHOUT WARRANTY OF ANY KIND

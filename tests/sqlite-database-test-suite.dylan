@@ -1,12 +1,5 @@
-module: sql-sqlite-test-suite
-synopsis: Test suite for the sql-sqlite library.
-
-define suite sql-sqlite-test-suite ()
-  test dbms-name-test;
-  test dbms-version-test;
-  test dbms-connect-disconnect-test;
-  test dbms-sql-statement-test;
-end suite;
+module: sqlite-database-test-suite
+synopsis: Test suite for the sqlite-database library.
 
 define test dbms-name-test ()
   let dbms-handle = make(<sqlite-dbms>);
@@ -55,3 +48,10 @@ define test dbms-sql-statement-test ()
 
   check-true("received a valid resultset", result-set);
 end test dbms-sql-statement-test;
+
+define suite sqlite-database-test-suite ()
+  test dbms-name-test;
+  test dbms-version-test;
+  test dbms-connect-disconnect-test;
+  test dbms-sql-statement-test;
+end suite;
